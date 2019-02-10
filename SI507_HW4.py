@@ -8,19 +8,13 @@
 
 ## Your import statements for use in the program (both things installed wih pip & things that come default with Python) should go here!
 import csv
+import re
 
 #####################
 
 ## [PART 1]
 # Provided is a dataset: movies_dataset_group.csv
 # Your first goal is to write code to "clean" this dataset a little bit and produce a cleaned version of the dataset in a file called movies_clean.csv.
-
-# NOTE that there are MANY ways to clean up a dataset programmatically. Many common ways will use a module to do so -- pandas is a common one.
-# If you take SI 618, you will use/are using the Pandas module in that course! You are welcome to use that here. (Just make sure you indicate in imports and requirements everything you need.)
-# However, you do not NEED to use Pandas to do this. Think carefully about what it is you need to achieve for these specific goals, and then try some things out.
-# You MAY (but do NOT have to) use any of the following modules, but NOT others, for this particular lab:
-# pandas, xlrd, scipy, numpy
-# HINT: The CSV module (built into Python) is probably going to be very useful , and using list and/or dictionary methods may also be useful!
 
 # The following things should be true of movies_clean.csv:
 
@@ -36,10 +30,29 @@ import csv
 
 ### My code
 
-with open ("movies_dataset_group", "r") as movie_fh:
+with open ("movies_dataset_group.csv", "r", encoding='utf-8') as movie_fh:
     movie_reader = csv.reader(movie_fh)
     for row in movie_reader:
-        print(row)
+        print ("\n***NEW ROW***\n")
+    
+        string_row = str(row)
+        release_date = (row[5])
+        match = re.search(r"(\d\d)-(\w*)-(\d\d)", release_date)
+        if match:
+            print (row)
+            pass
+        else:
+            release_date = "0"+release_date
+            clean_line = (re.sub("(\d*)-(\w*)-(\d\d)",release_date,string_row))
+            print (clean_line)
+
+
+
+
+
+
+
+
 ## [PART 2]
 
 # If you take all the movie ratings available in the dataset (G, PG, PG-13, R, NC-17 .. do not count Not Rated movies here) -- what is the *median* rating of the rated movies? Save the result in a variable median_rating (whose value should be a string representing a rating, e.g. "G" or "PG-13" or "R" or whatever it is).
@@ -86,5 +99,5 @@ My With the of Why Narc Into - Not Rated
 My My My The - G
 """
 
-print("\n\nNEW FAKE MOVIE TITLES CREATED BELOW...\n\n")
+#print("\n\nNEW FAKE MOVIE TITLES CREATED BELOW...\n\n")
 # Write your code to enact all of this below
