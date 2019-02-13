@@ -9,6 +9,9 @@
 ## Your import statements for use in the program (both things installed wih pip & things that come default with Python) should go here!
 import csv
 import re
+import random
+import itertools
+from itertools import permutations
 
 #####################
 
@@ -98,7 +101,7 @@ for row in clean_date_movie_list[1:]:
 avg = total_rating/count
 median_rating = int(avg)
 
-print (median_rating)
+#print (median_rating)
 
 ## [PART 3]
 # We want to play a "game" (sort of) about making up new movies. Use the itertools library and the clean movies_clean.csv data you've created to have your program repeatedly create 10 new movie titles and ratings, print them out neatly (see below for an example), and save a string with all of them (like below) in a variable called sample_fake_movies.
@@ -118,6 +121,40 @@ print (median_rating)
 
 # For example, here's one of millions of possible/reasonable outputs in the below string. The value of your sample_fake_movies variable should be something like this:
 
+# function to return a random movie rating
+def give_rando_rating (list):
+    random.shuffle(list)
+    return list[0]
+
+movie_title_list = []
+with open("movies_clean.csv","r") as fh:
+    fh_reader = csv.reader(fh)
+    for row in fh_reader:
+        movie_title = row[0]
+        title_split = movie_title.split()
+        for word in title_split:
+            movie_title_list.append(word)
+
+#print (movie_title_list)
+
+# Get all permutations of movie titles list
+random.shuffle(movie_title_list)
+options = permutations(movie_title_list[:10], 3)
+some_options = list(options)
+random.shuffle(some_options)
+
+def create_rando_movies(list_of_some_movies):
+    for i in list_of_some_movies[:10]:
+        for title in list(perm):
+            print (title)
+    return ("{} {} {} - {}".format(*i, rating)
+    # for title in list(perm):
+    #     print (title)
+
+ratings = list(rating_dict.keys())
+
+print (give_rando_rating(ratings))
+
 """
 Say Seabiscuit - G
 The Real Romeo - R
@@ -133,3 +170,5 @@ My My My The - G
 
 #print("\n\nNEW FAKE MOVIE TITLES CREATED BELOW...\n\n")
 # Write your code to enact all of this below
+
+sample_fake_movies = ""
