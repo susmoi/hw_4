@@ -30,36 +30,53 @@ import re
 
 ### My code
 movie_list = []
+clean_date_movie_list = []
 
 #open csv file for reading
-with open ("movies_dataset_group.csv", "r", newline ='', encoding='utf-8') as movie_fh:
+with open ("movies_dataset_group.csv", "r", newline ='') as movie_fh:
     movie_reader = csv.reader(movie_fh)
     for row in movie_reader:
         movie_list.append(row)
 
 #create a new csv file for writing contents of movie_list and replacing blank release_date cells with "NA"
-with open ("movies_clean.csv", "w", newline='', encoding='utf-8') as movie_list_fh:
-    movie_list_writer = csv.writer(movie_list_fh)
-    for row in movie_list:
-        release_date = row[5]
 
-        if len(release_date) >= 8:
-            match = re.search(r"(\d\d)-(\w*)-(\d\d)", release_date)
-
-            if match:
-                movie_list_writer.writerow(row)
-                #print (type(row))
-
-            else:
-                zero="0"
-                row[5] = zero+release_date
-                print (row[5])
-                movie_list_writer.writerow(row)
-
+#checking the dates to see if they are in the correct format -- DD/MM/YY.
+for row in movie_list:
+    release_date = row[5]
+    if len(release_date) >= 8:
+        match = re.search(r"(\d\d)-(\w*)-(\d\d)", release_date)
+        if match:
+            clean_date_movie_list.append(row)
+            #print (type(row))
         else:
-            row[5] = "NA"
-            print (row[5])
-            movie_list_writer.writerow(row)
+            zero="0"
+            row[5] = zero+release_date
+            #print (row[5])
+            clean_date_movie_list.append(row)
+    else:
+        row[5] = "NA"
+        #print (row[5])
+        clean_date_movie_list.append(row)
+
+with open ("movies_clean.csv", "w", newline='') as movies_clean_fh:
+    movies_clean_writer = csv.writer(movies_clean_fh)
+    for row in clean_date_movie_list:
+        #print (row)
+        for i in range(len(row)):
+            #print (row[i])
+            if row[i] =="":
+                row[i] = "NA"
+                #movies_clean_writer.writerow(row)
+            else:
+                row = row
+        movies_clean_writer.writerow(row)
+        #print (row)
+
+
+
+
+
+
 
 ## [PART 2]
 
