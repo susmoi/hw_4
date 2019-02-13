@@ -60,23 +60,15 @@ for row in movie_list:
 
 with open ("movies_clean.csv", "w", newline='') as movies_clean_fh:
     movies_clean_writer = csv.writer(movies_clean_fh)
+    #checking for empty cells before writing clean_date_movie_list onto movies_clean.csv
     for row in clean_date_movie_list:
-        #print (row)
         for i in range(len(row)):
             #print (row[i])
             if row[i] =="":
                 row[i] = "NA"
-                #movies_clean_writer.writerow(row)
             else:
                 row = row
         movies_clean_writer.writerow(row)
-        #print (row)
-
-
-
-
-
-
 
 ## [PART 2]
 
@@ -91,7 +83,22 @@ with open ("movies_clean.csv", "w", newline='') as movies_clean_fh:
 
 # Use code to compute this (by opening the data file and manipulating the data in some way) and to assign the median_rating variable correctly, which we will test.
 
+rating_dict = {"G":1, "PG": 2, "PG-13": 3, "R":4, "NC-17":5}
+total_rating = 0
+count = 0
 
+for row in clean_date_movie_list[1:]:
+    try:
+        rating = row[6]
+        number_rating = rating_dict[rating]
+        total_rating = total_rating + number_rating
+        count += 1
+    except:
+        pass
+avg = total_rating/count
+median_rating = int(avg)
+
+print (median_rating)
 
 ## [PART 3]
 # We want to play a "game" (sort of) about making up new movies. Use the itertools library and the clean movies_clean.csv data you've created to have your program repeatedly create 10 new movie titles and ratings, print them out neatly (see below for an example), and save a string with all of them (like below) in a variable called sample_fake_movies.
